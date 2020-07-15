@@ -1,3 +1,8 @@
+''' 
+Taken from IBM Solution-Starter-Kit-Energy-2020
+Heavily adapted by Team Green Planet for IBM 2020 IBM Intern hackathon
+'''
+
 import csv
 import time
 import configparser
@@ -7,6 +12,7 @@ from flask_restx import Api, Resource, fields, reqparse
 from flask_cors import CORS
 
 app = Flask(__name__)
+''' CORS is needed for dev on our own machines '''
 CORS(app)
 
 api = Api(app, version='1.0', title='Cloud Impact Rating API',
@@ -16,11 +22,11 @@ api = Api(app, version='1.0', title='Cloud Impact Rating API',
 
 from cloudant.client import Cloudant
 
+''' Allows for private storage of config files '''
 config = configparser.ConfigParser()
 config.read('config.ini')
 
-# You must overwrite the values in api_access below with those from your service credential, that you created in IBM Cloud IAM for Cloudant.
-# The actual values below are to just show the format - and these are no longer valid.
+''' Provide the secret credentials '''
 api_access = config['DEFAULT']
 
 client = Cloudant.iam(

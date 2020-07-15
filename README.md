@@ -2,13 +2,13 @@
 This functions as the API connecting our project
 
 # What I did to set up my enviornment 
-0. Set up Homebrew 
-1. brew install python
-2. sudo easy_install pip
-3. sudo pip install pipenv
-    1. sudo -H pip install -U pipenv
-4. pipenv install
-5. pipenv run python server.py
+0. *may not need* Set up Homebrew 
+1. *may not need* `brew install python`
+2. `sudo easy_install pip`
+3. `sudo pip install pipenv`
+    1. *only if command gave an error* `sudo -H pip install -U pipenv`
+4. `pipenv install`
+5. `pipenv run python server.py`
 
 ## NOTE
 - The config files are stored in a config file kept offline since it has private keys, this is needed to run so just ask
