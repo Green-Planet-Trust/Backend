@@ -4,8 +4,11 @@ import configparser
 
 from flask import Flask
 from flask_restx import Api, Resource, fields, reqparse
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
+
 api = Api(app, version='1.0', title='Cloud Impact Rating API',
     description='A protoype API system allowing the storage and retrieval of Climate Impact Rating data for products',
     prefix='/v1'
