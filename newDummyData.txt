@@ -1,4 +1,4 @@
-UID,Carbon-Footprint,Current-Company,isRecycleable,Stages,Production,Transportation,Retail,Date
+UID,CarbonFootprint,CurrentCompany,isRecycleable,Stages,Production,Transportation,Retail,Date
 123DB12A,123.45,IBM,true,100,23,0.45,2020-07-15-21:34
 1,1280,Apple,true,1000,200,80,2020-05-15-11:34
 999,144,Rubik's,false,15,49,90,2020-07-02-05:34

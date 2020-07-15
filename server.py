@@ -49,14 +49,14 @@ rating = api.model('Rating', {
 product = api.model('Product', {
     'id': fields.String(readonly=True, description='The unique product registration identifier'),
     'UID': fields.String(readonly=True, description='The unique product registration identifier'),
-    'Carbon-Footprint': fields.Float(required=True, description='The barcode for this product id, in EAN-13 format'),
-    'Current-Company': fields.String(required=True, description='The type of product'),
+    'CarbonFootprint': fields.Float(required=True, description='The barcode for this product id, in EAN-13 format'),
+    'CurrentCompany': fields.String(required=True, description='The type of product'),
     'isRecycleable': fields.String(required=True, description='The category of this product, with its type'),
     'Stages': fields.Nested(rating),
     'Date': fields.String(required=True, description='The category of this product, with its type')
 })
 
-db_name = 'cir-db2'
+db_name = 'cir-db3'
 
 # A Data Access Object to handle the reading and writing of Product records to the Cloudant DB
 
