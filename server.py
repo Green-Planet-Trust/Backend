@@ -3,6 +3,7 @@ Taken from IBM Solution-Starter-Kit-Energy-2020
 Heavily adapted by Team Green Planet for IBM 2020 IBM Intern hackathon
 '''
 
+from cloudant.client import Cloudant
 import csv
 import time
 import configparser
@@ -16,11 +17,10 @@ app = Flask(__name__)
 CORS(app)
 
 api = Api(app, version='1.0', title='Cloud Impact Rating API',
-    description='A protoype API system allowing the storage and retrieval of Climate Impact Rating data for products',
-    prefix='/v1'
-)
+          description='A protoype API system allowing the storage and retrieval of Climate Impact Rating data for products',
+          prefix='/v1'
+          )
 
-from cloudant.client import Cloudant
 
 ''' Allows for private storage of config files '''
 config = configparser.ConfigParser()
@@ -35,7 +35,8 @@ client = Cloudant.iam(
     connect=True
 )
 
-product_ns = api.namespace('product', description='User CIR Product Operations')
+product_ns = api.namespace(
+    'product', description='User CIR Product Operations')
 
 # Define the API models we will use (these will show up in the Swagger Specification).
 
@@ -65,6 +66,7 @@ db_name = 'cir-db'
 
 # A Data Access Object to handle the reading and writing of Product records to the Cloudant DB
 
+
 class ProductDAO(object):
     def __init__(self):
         if db_name in client.all_dbs():
@@ -75,7 +77,7 @@ class ProductDAO(object):
             self.import_data()
 
     def import_data(self):
-        print ("Importing dummy data", end = '', flush=True)
+        print("Importing dummy data", end='', flush=True)
         with open('dummy-data.txt') as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
             line_count = 0
@@ -99,11 +101,12 @@ class ProductDAO(object):
                             'repairability': int(row[15])
                         }
                     }
-                    time.sleep(0.15)     # Have to rate limit it to less than 10 a second, due to free tier
+                    # Have to rate limit it to less than 10 a second, due to free tier
+                    time.sleep(0.15)
                     self.create(data)
-                    print(".", end = '', flush=True)
+                    print(".", end='', flush=True)
                 line_count += 1
-        print ("complete")
+        print("complete")
 
     def list(self):
         return [x for x in self.cir_db]
@@ -139,6 +142,15 @@ class ProductDAO(object):
 
     def update(self, id, data):
         # Not currently supported
+        try:
+            my_document = self.cir_db[id]
+            for key, value in data.items():
+                my_document[key] = value
+
+            my_document.save()
+
+        except KeyError:
+            api.abort(404, "Product {} does not exist".format(id))
         return
 
     def delete(self, id):
@@ -148,6 +160,7 @@ class ProductDAO(object):
         except KeyError:
             api.abort(404, "Product {} not registered".format(id))
         return
+
 
 # Handlers for the actual API urls
 
@@ -168,12 +181,13 @@ class Product(Resource):
         if args['barcode_id']:
             return [ProductDAO().get_by_barcode(args['barcode_id'])]
         else:
-            return ProductDAO().list()    
+            return ProductDAO().list()
 
     @api.marshal_with(product, code=201)
     @api.doc(body=product)
     def post(self):
         return ProductDAO().create(api.payload), 201
+
 
 @product_ns.route('/<string:id>')
 class ProductWithID(Resource):
@@ -187,5 +201,11 @@ class ProductWithID(Resource):
     def delete(self, id):
         return ProductDAO().delete(id)
 
+    @api.marshal_with(product)
+    @api.doc(body=product, params={'id': 'The unique ID of this product'})
+    def put(self, id):
+        return ProductDAO().update(id=id, data=api.payload)
+
+
 if __name__ == '__main__':
-	app.run()
+    app.run()
