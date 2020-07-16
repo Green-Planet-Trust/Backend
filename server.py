@@ -7,8 +7,9 @@ from cloudant.client import Cloudant
 import csv
 import time
 import configparser
+import json
 
-from flask import Flask
+from flask import Flask, request
 from flask_restx import Api, Resource, fields, reqparse
 from flask_cors import CORS
 
@@ -54,10 +55,11 @@ product = api.model('Product', {
     'isRecycleable': fields.String(required=True, description='The category of this product, with its type'),
     'Stages': fields.Nested(rating),
     'Date': fields.String(required=True, description='The category of this product, with its type'),
-    'description': fields.String(required=True, description='The description of this product, with its type')
+    'description': fields.String(required=True, description='The description of this product, with its type'),
+    'previous': fields.String(required=True, description='The description of this product, with its type')
 })
 
-db_name = 'cir-db2'
+db_name = 'cir-db3'
 
 # A Data Access Object to handle the reading and writing of Product records to the Cloudant DB
 
@@ -195,7 +197,7 @@ class ProductWithID(Resource):
     @api.marshal_with(product)
     @api.doc(body=product, params={'id': 'The unique ID of this product'})
     def put(self, id):
-        return ProductDAO().update(id=id, data=api.payload)
+        return ProductDAO().update(id=id, data=json.loads((request.data).decode('utf8')))
 
 
 if __name__ == '__main__':
