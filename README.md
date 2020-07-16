@@ -1,5 +1,7 @@
 # Backend
-This functions as the API connecting our project
+This functions as the API connecting our project. Data in the database is synced from the blockchain when companies deem the product as ready for client facing. Not all blockchain infomration is available through the API, companies should request a blockchain wallet for direct access. 
+
+![alt text](https://github.com/Green-Planet-Trust/Backend/blob/development/splash.png?raw=true)
 
 # What I did to set up my enviornment 
 0. *may not need* Set up Homebrew 
