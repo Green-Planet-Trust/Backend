@@ -17,8 +17,10 @@ app = Flask(__name__)
 ''' CORS is needed for dev on our own machines '''
 CORS(app)
 
-api = Api(app, version='1.0', title='Cloud Impact Rating API',
-          description='A protoype API system allowing the storage and retrieval of Climate Impact Rating data for products',
+api = Api(app, version='1.0', title='IBM Energy Trust Database API',
+          description='An API system allowing the storage and retrieval of carbon emissions of products. Database synchronizes\
+           with blockchain when companies deem product as client ready. Not all blockchain data is available. Companies \
+           please request Blockchain Wallet for update permissions.',
           prefix='/v1'
           )
 
@@ -205,7 +207,7 @@ class Product(Resource):
         return ProductDAO().create(json.loads((request.data).decode('utf8'))), 201
 
 
-@product_ns.route('/test/<string:id>', methods=['GET', 'POST', 'PUT'])
+@product_ns.route('/block/<string:id>', methods=['GET', 'POST', 'PUT'])
 class ProductWithID(Resource):
     @api.marshal_with(product)
     @api.doc(params={'id': 'The unique ID of this product'})
