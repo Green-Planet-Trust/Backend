@@ -59,7 +59,7 @@ product = api.model('Product', {
     'previous': fields.String(required=True, description='The description of this product, with its type')
 })
 
-db_name = 'cir-db4'
+db_name = 'cir-db5'
 
 # A Data Access Object to handle the reading and writing of Product records to the Cloudant DB
 
@@ -91,7 +91,7 @@ class ProductDAO(object):
                             'Retail': float(row[6])
                         },
                         'Date': row[7],
-                        'descpription': row[8],
+                        'description': row[8],
                         'previous': row[9]
                     }
                     # Have to rate limit it to less than 10 a second, due to free tier
