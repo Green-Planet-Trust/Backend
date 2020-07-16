@@ -56,7 +56,7 @@ product = api.model('Product', {
     'Date': fields.String(required=True, description='The category of this product, with its type')
 })
 
-db_name = 'cir-db3'
+db_name = 'cir-db2'
 
 # A Data Access Object to handle the reading and writing of Product records to the Cloudant DB
 
@@ -79,8 +79,8 @@ class ProductDAO(object):
                 if line_count > 0:
                     data = {
                         'UID': row[0],
-                        'Carbon-Footprint': float(row[1]),
-                        'Current-Company': row[2],
+                        'CarbonFootprint': float(row[1]),
+                        'CurrentCompany': row[2],
                         'isRecycleable': row[3],
                         'Stages': {
                             'Production': float(row[4]),
@@ -112,7 +112,7 @@ class ProductDAO(object):
         # index of some such search ability
         try:
             my_document = self.cir_db[barcode_id]
-            my_document['id'] = my_document['barcode_id']
+            my_document['id'] = my_document['UID']
         except KeyError:
             api.abort(404, "Product {} not registered".format(id))
         return my_document

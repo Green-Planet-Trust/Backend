@@ -1,8 +1,8 @@
-UID,CarbonFootprint,CurrentCompany,isRecycleable,Stages,Production,Transportation,Retail,Date
-123DB12A,123.45,IBM,true,100,23,0.45,2020-07-15-21:34
-1,1280,Apple,true,1000,200,80,2020-05-15-11:34
-999,144,Rubik's,false,15,49,90,2020-07-02-05:34
-A34B67D9,1203.25,Omaha Steak,true,980,123,100.25,2020-07-13-21:34
-12345678,433.86,Ferrari,false,300,23,110.86,2010-10-15-21:34
-98765432,81,IBM,true,32,0,49,2020-06-15-21:34
-B38D56A2,123.97,Pelican,false,18.11,89.46,16.4,2020-07-01-21:34
+UID,CarbonFootprint,CurrentCompany,isRecycleable,Stages,Production,Transportation,Retail,Date,description,
+123DB12A,123.45,IBM,true,100,23,0.45,2020-07-15-21:34,Quantum Computer
+1,1280,Apple,true,1000,200,80,2020-05-15-11:34,iPhone
+999,144,Rubik's,false,15,49,90,2020-07-02-05:34,Cube Puzzle
+A34B67D9,1203.25,Omaha Steak,true,980,123,100.25,2020-07-13-21:34,Filet Mignon
+12345678,433.86,Ferrari,false,300,23,110.86,2010-10-15-21:34,458
+98765432,81,IBM,true,32,0,49,2020-06-15-21:34,Type I Tabulator
+B38D56A2,123.97,Pelican,false,18.11,89.46,16.4,2020-07-01-21:34,Camera Case
