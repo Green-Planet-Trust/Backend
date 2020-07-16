@@ -59,7 +59,7 @@ product = api.model('Product', {
     'previous': fields.String(required=True, description='The description of this product, with its type')
 })
 
-db_name = 'cir-db3'
+db_name = 'cir-db4'
 
 # A Data Access Object to handle the reading and writing of Product records to the Cloudant DB
 
@@ -111,6 +111,25 @@ class ProductDAO(object):
         except KeyError:
             api.abort(404, "Product {} not registered".format(id))
         return my_document
+
+    def get_history(self, id):
+        try:
+            arr = []
+            print("Oh no")
+            my_document = self.cir_db[id]
+            print("Oh yes!")
+            my_document['id'] = my_document['UID']
+            arr.append(my_document)
+            temp_doc = my_document
+            while(temp_doc["previous"] != "null"):
+                time.sleep(0.15)
+                new_doc = self.cir_db[temp_doc["previous"]]
+                new_doc['id'] = new_doc['UID']
+                arr.append(new_doc)
+                temp_doc = new_doc
+        except KeyError:
+            api.abort(404, "Product {} not registered".format(id))
+        return arr
 
     def get_by_barcode(self, barcode_id):
         # For now this is easy, since id is the same as barcode_id....in the future this would need an
@@ -170,9 +189,13 @@ class Product(Resource):
         # Currently we support either a full list, or query by barcode_id.
         parser = reqparse.RequestParser()
         parser.add_argument('barcode_id', required=False, location='args')
+        parser.add_argument('random', required=False, location='args')
         args = parser.parse_args()
         if args['barcode_id']:
             return [ProductDAO().get_by_barcode(args['barcode_id'])]
+        elif args['random']:
+            print("in here!")
+            return [ProductDAO().get_history(args['random'])]
         else:
             return ProductDAO().list()
 
@@ -181,6 +204,14 @@ class Product(Resource):
     def post(self):
         return ProductDAO().create(json.loads((request.data).decode('utf8'))), 201
 
+
+@product_ns.route('/test/<string:id>', methods=['GET', 'POST', 'PUT'])
+class ProductWithID(Resource):
+    @api.marshal_with(product)
+    @api.doc(params={'id': 'The unique ID of this product'})
+    def get(self, id):
+        return "hey"
+        
 
 @product_ns.route('/<string:id>', methods=['GET', 'POST', 'PUT'])
 class ProductWithID(Resource):
