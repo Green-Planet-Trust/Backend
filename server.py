@@ -126,7 +126,7 @@ class ProductDAO(object):
         # For now, we'll set the id to be the same as the barcode_id. For production systems, we would
         # probably want these seperate, and to implement indexed searching by barcode_id for GET.
         try:
-            data['_id'] = data['UID']
+            data['_id'] = str(data['UID'])
             my_document = self.cir_db.create_document(data)
             my_document['id'] = my_document['UID']
         except KeyError:
@@ -179,7 +179,7 @@ class Product(Resource):
     @api.marshal_with(product, code=201)
     @api.doc(body=product)
     def post(self):
-        return ProductDAO().create(api.payload), 201
+        return ProductDAO().create(json.loads((request.data).decode('utf8'))), 201
 
 
 @product_ns.route('/<string:id>', methods=['GET', 'POST', 'PUT'])
@@ -198,6 +198,9 @@ class ProductWithID(Resource):
     @api.doc(body=product, params={'id': 'The unique ID of this product'})
     def put(self, id):
         return ProductDAO().update(id=id, data=json.loads((request.data).decode('utf8')))
+
+    def post(self, id):
+        return ProductDAO().create(data=json.loads((request.data).decode('utf8')))
 
 
 if __name__ == '__main__':
