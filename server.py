@@ -53,7 +53,8 @@ product = api.model('Product', {
     'CurrentCompany': fields.String(required=True, description='The type of product'),
     'isRecycleable': fields.String(required=True, description='The category of this product, with its type'),
     'Stages': fields.Nested(rating),
-    'Date': fields.String(required=True, description='The category of this product, with its type')
+    'Date': fields.String(required=True, description='The category of this product, with its type'),
+    'description': fields.String(required=True, description='The description of this product, with its type')
 })
 
 db_name = 'cir-db2'
@@ -87,7 +88,9 @@ class ProductDAO(object):
                             'Transportation': float(row[5]),
                             'Retail': float(row[6])
                         },
-                        'Date': row[7]
+                        'Date': row[7],
+                        'descpription': row[8],
+                        'previous': row[9]
                     }
                     # Have to rate limit it to less than 10 a second, due to free tier
                     time.sleep(0.15)
@@ -156,7 +159,7 @@ class ProductDAO(object):
 # those for a consumer (which is really just "look up by barcode"), and those that
 # allow manufacturers to publish their product data.
 
-@product_ns.route('')
+@product_ns.route('', methods=['GET', 'POST', 'PUT'])
 class Product(Resource):
     @api.marshal_with(product)
     @api.doc('List products')
@@ -177,7 +180,7 @@ class Product(Resource):
         return ProductDAO().create(api.payload), 201
 
 
-@product_ns.route('/<string:id>')
+@product_ns.route('/<string:id>', methods=['GET', 'POST', 'PUT'])
 class ProductWithID(Resource):
     @api.marshal_with(product)
     @api.doc(params={'id': 'The unique ID of this product'})
